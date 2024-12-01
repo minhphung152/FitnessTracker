@@ -1,0 +1,205 @@
+{% extends 'food_tracker/base.html' %}
+
+{% block title %}Food Log{% endblock %}
+
+{% block content %}
+<div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+    <h2 class="mb-12 text-2xl text-center">Food Logs</h2>
+    <p class="text-xl m-6">Goal: <span class="font-semibold">{{ weekly_goal }}</span></p>
+    <p class="text-xl m-6">Recommended Daily Calories: <span class="font-semibold">{{ recommended_calories }} cal</span></p>
+    <p class="text-xl m-6">Calories Today: <span class="font-semibold">{{ total_calories }} cal</span></p>
+
+    {% if calories_left >= 0 %}
+    <p class="text-xl m-6">Calories Left : <span class="font-semibold">{{ calories_left }} cal</span></p>
+    {% else %}
+    <p class="text-xl m-6">Calories Over: <span class="font-semibold">{{ calories_over }} cal</span></p>
+    {% endif %}
+
+    <table class="table-auto w-1/2 m-6">
+        <thead>
+            <tr>
+                <th class="px-4 py-2">Macro</th>
+                <th class="px-4 py-2">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="border px-4 py-2">Protein</td>
+                <td class="border px-4 py-2">{{ total_protein }} g</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2">Carbohydrates</td>
+                <td class="border px-4 py-2">{{ total_carbs }} g</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2">Fat</td>
+                <td class="border px-4 py-2">{{ total_fat }} g</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="progress-circle-container">
+        <div class="progress-circle" id="progress-circle"></div>
+            <div class="progress-text" id="progress-text">
+                {{ total_calories }} / {{ recommended_calories }} cal
+            </div>
+        </div>
+    </div>
+
+    <!-- <form method="get" action="{% url 'food_tracker:food_log' %}">
+        <label for="meal_type" class="text-xl m-6">Filter by Meal Type:</label>
+        <label for="meal_type"></label>
+        <select name="meal_type" id="meal_type" onchange="this.form.submit()" class="px-6 py-4 rounded-xl font-semibold">
+            <option value="all" {% if meal_type == 'all' %}selected{% endif %}>All</option>
+            <option value="breakfast" {% if meal_type == 'breakfast' %}selected{% endif %}>Breakfast</option>
+            <option value="lunch" {% if meal_type == 'lunch' %}selected{% endif %}>Lunch</option>
+            <option value="dinner" {% if meal_type == 'dinner' %}selected{% endif %}>Dinner</option>
+            <option value="snacks" {% if meal_type == 'snacks' %}selected{% endif %}>Snacks</option>
+        </select>
+    </form> -->
+    
+    <!-- <p class="text-xl m-6 font-semibold">{{ meal_type|title }}</p> -->
+    <!-- {% for meal in meals %}
+    <p class="text-2xl font-semibold">{{ meal|title }}</p>
+    <div class="mt-6 mb-4 grid gap-3">
+        {% for entry in entries %}
+            {% if entry.meal_type == meal %}
+            <div class="p-6 bg-white rounded-b-xl">
+                <a href="{% url 'food_tracker:entry_detail' entry.pk %}">
+                    <div class="inline-block mr-10">
+                        <h2 class="text-2xl">{{ entry.food_name }} - {{ entry.calories }} cal</h2>
+                        <p class="text-gray-500">Servings: {{ entry.servings }}</p>
+                        <p class="text-gray-500">{{ entry.date }}</p>
+                    </div>
+                </a>
+                <a href="{% url 'food_tracker:delete_food_entry' entry.pk %}" class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-xl ml-4">Delete</a>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endfor %} -->
+    
+    {% for meal in meals %}
+        <p class="text-2xl font-semibold"> {{ meal|title }}</p>
+        {% if entries is not Empty %}
+        <div class="mt-6 mb-4">
+            <table class="min-w-full bg-white">
+                <thead>
+                    <tr>
+                        <th class="py-2">Food Name</th>
+                        <th class="py-2">Calories</th>
+                        <th class="py-2">Servings</th>
+                        <th class="py-2">Protein (g)</th>
+                        <th class="py-2">Fat (g)</th>
+                        <th class="py-2">Carbs (g)</th>
+                        <th class="py-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in entries %}
+                        {% if entry.meal_type == meal %}
+                            <tr>
+                                <td class="border px-4 py-2">
+                                    <a href="{%url 'food_tracker:entry_detail' entry.pk %}">
+                                        {{ entry.food_name }}
+                                    </a>
+                                </td>
+                                <td class="border px-4 py-2 text-center">{{ entry.calories }}</td>
+                                <td class="border px-4 py-2 text-center">{{ entry.servings }}</td>
+                                <td class="border px-4 py-2 text-center">{{ entry.protein }}</td>
+                                <td class="border px-4 py-2 text-center">{{ entry.fat }}</td>
+                                <td class="border px-4 py-2 text-center">{{ entry.carbs }}</td>
+                                <td class="border px-4 py-2 text-center">
+                                    <a href="{% url 'food_tracker:delete_food_entry' entry.pk %}" class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-xl">Delete</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    {% endfor %}
+
+    <!-- <div class="mt-6 mb-4">
+        <table class="min-w-full bg-white">
+            <thead>
+                <tr>
+                    <th class="py-2">Meal Type</th>
+                    <th class="py-2">Food Name</th>
+                    <th class="py-2">Calories</th>
+                    <th class="py-2">Servings</th>
+                    <th class="py-2">Protein (g)</th>
+                    <th class="py-2">Fat (g)</th>
+                    <th class="py-2">Carbs (g)</th>
+                    <th class="py-2">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in entries %}
+                    <tr>
+                        <td class="border px-4 py-2 text-cente">{{ entry.meal_type|title }}</td>
+                        <td class="border px-4 py-2">
+                            <a href="{%url 'food_tracker:entry_detail' entry.pk %}">
+                                {{ entry.food_name }}
+                            </a>
+                        </td>
+                        <td class="border px-4 py-2 text-center">{{ entry.calories }}</td>
+                        <td class="border px-4 py-2 text-center">{{ entry.servings }}</td>
+                        <td class="border px-4 py-2 text-center">{{ entry.protein }}</td>
+                        <td class="border px-4 py-2 text-center">{{ entry.fat }}</td>
+                        <td class="border px-4 py-2 text-center">{{ entry.carbs }}</td>
+                        <td class="border px-4 py-2 text-center">
+                            <a href="{% url 'food_tracker:delete_food_entry' entry.pk %}" class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-xl">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div> -->
+
+
+    <a href="{% url 'food_tracker:search_food' %}" class="bg-blue-500 hover:bg-blue-700 px-4 py-2 text-white rounded-xl">Search Food</a>
+</div>
+
+<style>
+    .progress-circle-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .progress-circle {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: conic-gradient(
+            rgb(59 130 246) {{ calories_percentage }}%,
+            #e0e0e0 {{ calories_percentage }}%   
+        );
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
+
+    .progress-circle::before {
+        content: '';
+        width: 170px;
+        height: 170px;
+        border-radius: 50%;
+        background: rgb(243 244 246);
+        position: absolute;
+    }
+
+    .progress-text {
+        position: absolute;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+    }
+
+</style>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'tracker/base.html' %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+    <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+        <!-- <div class="fixed bottom-4 right-4">
+            <a href="{% url 'tracker:new' %}" class="=bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-700">
+                <span class="text-2xl">+</span>
+            </a>
+        </div> -->
+        <a href="{% url 'tracker:new' %}" class="inline-block bg-blue-500 text-white font-semibold px-4 py-2 rounded-xl shadow-lg hover:bg-blue-700 mr-2" title="Add Log">+</a>
+        {% if not logs %} 
+            <p class="text-2xl"><strong>You don't have any weight logs!</strong></p>
+        {% else %}
+        <a href="{% url 'tracker:weight_logs' %}" class="bg-blue-500 text-white px-4 py-2 rounded-xl mt-4 inline-block hover:bg-blue-700 shadow-lg">Logs</a>
+            {% include 'tracker/weight_chart.html' %}
+        {% endif %}
+    </div>
+
+    <!-- <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+        {% if not goal %} 
+            <p class="text-2xl"><strong>You don't have any goal set yet!</strong></p>
+        {% else %}
+        <a href="{% url 'tracker:goal_detail' goal.id %}">
+            <h2 class="mb-12 text-2xl text-center">Your Weight Goal</h2>
+
+            {% if latest_log <= goal.target_weight and goal.goal_type == 'weight_loss' %} 
+                <h2 class="text-2xl"><strong>You have reached your goal!</strong></h2>
+                <p>Goal: <strong>{{ goal.get_goal_type_display }} lbs</strong></p>
+                <p>Start Weight: <strong>{{ goal.start_weight }} lbs</strong></p>
+
+                {% if latest_log is not None %}
+                <p>Current Weight: <strong>{{ latest_log }} lbs</strong></p>
+                {% endif %}
+
+                <p>Target Weight: <strong>{{ goal.target_weight }} lbs</strong></p>
+
+                <a href="{% url 'tracker:update_goal' goal.id %}" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-xl mt-4 inline-block">Update Goal</a>
+                <a href="{% url 'tracker:delete_goal' goal.id%}" class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-xl mt-4 inline-block">Delete Goal</a>
+            {% elif latest_log >= goal.target_weight and goal.goal_type == 'weight_gain' %} 
+                <h2 class="text-2xl"><strong>You have reached your goal!</strong></h2>
+                <p>Goal: <strong>{{ goal.get_goal_type_display }}</strong></p>
+                <p>Start Weight: <strong>{{ goal.start_weight }} lbs</strong></p>
+
+                {% if latest_log is not None %}
+                <p>Current Weight: <strong>{{ latest_log }} lbs</strong></p>
+                {% endif %}
+
+                <p>Target Weight: <strong>{{ goal.target_weight }} lbs</strong></p>
+                <a href="{% url 'tracker:set_goal' %}" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-xl mt-4 inline-block">Set New Goal</a>
+                <a href="{% url 'tracker:delete_goal' goal.id%}" class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-xl mt-4 inline-block">Delete Goal</a>
+            {% else %}
+                {% if goal %}
+                    <p>Goal: <strong>{{ goal.get_goal_type_display }}</strong></p>
+                    <p>Start Weight: <strong>{{ goal.start_weight }} lbs</strong></p>
+
+                    {% if latest_log is not None %}
+                    <p>Current Weight: <strong>{{ latest_log }} lbs</strong></p>
+                    {% endif %}
+
+                    <p>Goal Weight: <strong>{{ goal.target_weight}} lbs</strong></p>
+                    <p>Target Date: <strong>{{ goal.target_date }}</strong></p>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        </a>
+    </div> -->
+
+    <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+        {% include 'tracker/goal.html' with current_weight=latest_log %}
+    </div>
+
+    <!-- <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+        <div class="grid gap-3">
+            <h2 class="text-2xl">BMI Logs</h2>
+            {% if not bmi_logs %}
+                <p class="text-2xl"><strong>You don't have any BMI logs!</strong></p>
+            {% else %}
+                {% for bmi_log in bmi_logs %}
+                    <a href="{% url 'tracker:bmi_detail' bmi_log.id %}">
+                        <div class="p-6 bg-white rounded-xl">
+                            <p class="text-gray-500"><strong>{{ bmi_log.interpret_bmi }}!</strong></p>
+                        </div>
+                    </a>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div> -->
+{% endblock %}

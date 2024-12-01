@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    <title>{% block title %}{% endblock %} | Weight Tracker</title>
+</head>
+<body>
+    <nav class="py-6 px-6 flex justify-between items-center border-b border-gray-200">
+        <a href="/tracker" class="text-xl font-semibold">Weight Tracker</a> 
+
+        <div class="space-x-6">
+            <div class="border inline-block px-2 py-2 m-2 bg-blue-500 hover:bg-blue-700 rounded-xl shadow-lg">
+                <a href="{% url 'food_tracker:food_log' %}" class="text-lg font-semibold">Food Tracker</a>
+            </div>
+            <a href="{% url 'tracker:new' %}" class="text-lg font-semibold hover:text-gray-500">Log New Weight</a>
+            <a href="{% url 'tracker:set_goal' %}" class="text-lg font-semibold hover:text-gray-500">Set Goal</a>
+            <a href="{% url 'tracker:log_bmi' %}" class="text-lg font-semibold hover:text-gray-500">Calculate BMI</a>
+            <!-- <a href="{% url 'food_tracker:search_food' %}" class="text-lg font-semibold hover:text-gray-500">Search Food</a>
+            <a href="{% url 'food_tracker:calculate_tdee' %}" class="text-lg font-semibold hover:text-gray-500" title="Total Daily Energy Expenditure">TDEE</a> -->
+            
+
+            <!-- {% if request.user.is_authenticated %}
+            {% else %}
+            <a href="{% url 'core:signup' %}" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Sign up</a>
+            <a href="{% url 'core:login' %}" class="px-6 py-3 text-lg font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Log in</a>
+            {% endif %} -->
+        </div>
+    </nav>
+    <div class="px-6 py-6">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

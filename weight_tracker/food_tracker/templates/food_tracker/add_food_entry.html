@@ -1,0 +1,32 @@
+{% extends 'food_tracker/base.html' %}
+
+{% block title %}Add Food Entry{% endblock %}
+
+{% block content %}
+
+<div class="container mx-auto mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+    <h1 class="text-2xl mb-6 font-semibold">Add Food Entry</h1>
+    <form method="post">
+        {% csrf_token %}
+        <p>Food Name: <strong>{{ food_name }}</strong></p>
+        <p>Calories: <strong>{{ calories }} cal</strong></p>
+        <p>Protein: <strong>{{ protein }} g</strong></p>
+        <p>Fat: <strong>{{ fat }} g</strong></p>
+        <p>Carbs: <strong>{{ carbs }} g</strong></p>
+
+        <label for="servings_{{ food.fdcId }}">Servings:</label>
+        <input type="number" name="servings" id="servings_{{ food.fdcId }}" min="1" value="1" required class="border rounded-xl px-2 py-1 mb-1">
+        <br>
+        <label for="meal_type">Meal Type:</label>
+        <select name="meal_type" id="meal_type" required class="border rounded-xl px-2 py-1">
+            <option value="breakfast">Breakfast</option>
+            <option value="lunch">Lunch</option>
+            <option value="dinner">Dinner</option>
+            <option value="snacks">Snacks</option>
+        </select>
+        <br>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-xl mt-4 shadow-lg">+</button>
+    </form>
+</div>
+
+{% endblock %}

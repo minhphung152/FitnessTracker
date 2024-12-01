@@ -1,0 +1,38 @@
+{% extends 'food_tracker/base.html' %}
+
+{% block title %}Entry Detail{% endblock %}
+
+{% block content %}
+
+<div class="container mx-auto mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+    <h2 class="text-2xl font-semibold">{{ food_name }}</h2>
+    <p class="text-xl mt-3">Number of servings: {{ servings }}</p>
+    <table class="table-auto w-1/2 m-6">
+        <thead>
+            <tr>
+                <th class="px-4 py-2">Macro</th>
+                <th class="px-4 py-2">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="border px-4 py-2">Calories</td>
+                <td class="border px-4 py-2">{{ calories }} cal</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2">Protein</td>
+                <td class="border px-4 py-2">{{ protein }} g</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2">Carbohydrates</td>
+                <td class="border px-4 py-2">{{ carbs }} g</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2">Fat</td>
+                <td class="border px-4 py-2">{{ fat }} g</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

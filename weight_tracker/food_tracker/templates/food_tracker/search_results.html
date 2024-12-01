@@ -1,0 +1,43 @@
+{% extends 'food_tracker/base.html' %}
+
+{% block title %}Seach Results{% endblock %}
+
+{% block content %}
+<div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+    <a href="{% url 'food_tracker:search_food' %}" class="bg-blue-500 hover:bg-blue-700 text-white mt-4 py-4 px-8 text-lg rounded-xl">Search Food</a>
+    <h2 class="mb-12 text-2xl text-center">Search Results</h1>
+
+    <div class="grid gap-3">
+        {% for food in data.foods %}
+            <div class="p-6 bg-white rounded-xl">
+                <div class="inline-block mr-10">
+                    <a href="{% url 'food_tracker:add_food_entry' food.fdcId %}">
+                        <p class="text-2xl">{{ food.description }}</p>
+                    </a>
+
+                    {% for nutrient in food.foodNutrients %}
+                        {% if nutrient.nutrientName == 'Energy' and nutrient.unitName == 'KCAL' %}
+                            <p class="text-gray-500">{{ nutrient.value }} cal</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <form method="post" action="{% url 'food_tracker:add_food_entry' food.fdcId %}">
+                    {% csrf_token %}
+                    <label for="servings_{{ food.fdcId }}">Servings:</label>
+                    <input type="number" name="servings" id="servings_{{ food.fdcId }}" min="1" value="1" required class="border rounded-xl px-2 py-1">
+                    <br>
+                    <label for="meal_type">Meal Type:</label>
+                    <select name="meal_type" id="meal_type_{{ food.fdcId }}" required class="border rounded-xl px-2 py-1">
+                        <option value="breakfast">Breakfast</option>
+                        <option value="lunch">Lunch</option>
+                        <option value="dinner">Dinner</option>
+                        <option value="snacks">Snacks</option>
+                    </select>
+                    <button type="submit" class="inline-block bg-blue-500 text-white font-semibold px-4 py-2 rounded-xl hover:bg-blue-700" title="Add Food">+</button>
+                </form>
+                <!-- <a href="{% url 'food_tracker:add_food_entry' food.fdcId %}" class="inline-block bg-blue-500 text-white font-semibold px-4 py-2 rounded-xl hover:bg-blue-700" title="Add Food">+</a> -->
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

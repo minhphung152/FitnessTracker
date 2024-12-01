@@ -1,0 +1,14 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+    <h1 class="text-2xl mb-6">Choose Your Service</h1>
+    <div class="grid grid-cols-2 gap-6">
+        <a href="./tracker" class="block bg-blue-500 hover:bg-blue-700 text-white text-center py-4 px-8 rounded-xl">Weight Tracking</a>
+        <a href="{% url 'food_tracker:food_log' %}" class="block bg-green-500 hover:bg-green-500 text-white text-center py-4 px-8 rounded-xl">Food Intake</a>
+    </div>
+</div>
+
+{% endblock %}
