@@ -61,7 +61,7 @@ def new(request):
             weight_log.created_by = request.user
             weight_log.save()
 
-            return redirect('core:index')
+            return redirect('tracker:index')
     else:
         form = NewWeightLogForm()
 
@@ -81,7 +81,7 @@ def set_goal(request):
             goal.created_by = request.user
             goal.save()
 
-            return redirect('core:index')
+            return redirect('tracker:index')
     else:
         form = SetGoalForm()
 
@@ -99,7 +99,7 @@ def update_goal(request, pk):
 
         if form.is_valid():
             form.save()
-            return redirect('core:index')
+            return redirect('tracker:index')
     else:
         form = SetGoalForm(instance=goal)
     return render(request, 'tracker/update_goal.html', {
@@ -121,7 +121,7 @@ def delete_goal(request, pk):
     goal = get_object_or_404(Goal, pk=pk, created_by=request.user)
     goal.delete()
 
-    return redirect('core:index')
+    return redirect('tracker:index')
 
 # Weight Trends Chart
 @login_required
